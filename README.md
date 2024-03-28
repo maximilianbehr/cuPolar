@@ -2,6 +2,7 @@
 
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
  ![GitHub Release](https://img.shields.io/github/v/release/maximilianbehr/cuPolar)
+ [![DOI](https://zenodo.org/badge/777737236.svg)](https://zenodo.org/doi/10.5281/zenodo.10892350)
 
 **Copyright:** Maximilian Behr
 
