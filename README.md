@@ -10,7 +10,7 @@
 
 `cuPolar` is a `CUDA` library implementing Newton and Hayley's method for the Polar Decomposition of a nonsingular square matrix $A=QH$, where $Q$ is unitary and $H$ is hermitian positive semidefinite.
 
-`cuNMF` supports real and complex, single and double precision matrices.
+`cuPolar` supports real and complex, single and double precision matrices.
 
 ## Available Functions
 
