@@ -37,7 +37,7 @@ endif()
 
 # cupolar library
 add_library(cupolar SHARED cupolar_newton.cu cupolar_hayley.cu)
-set_property(TARGET cupolar PROPERTY CUDA_ARCHITECTURES native)
+set_property(TARGET cupolar PROPERTY CUDA_ARCHITECTURES all)
 set_target_properties(cupolar PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 set_target_properties(cupolar PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
 target_link_libraries(cupolar PUBLIC cublas cusolver)
