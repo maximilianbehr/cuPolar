@@ -36,7 +36,7 @@ else()
 endif()
 
 # cupolar library
-add_library(cupolar SHARED cupolar_newton.cu cupolar_hayley.cu)
+add_library(cupolar SHARED cupolar_newton.cu cupolar_halley.cu)
 set_property(TARGET cupolar PROPERTY CUDA_ARCHITECTURES all)
 set_target_properties(cupolar PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 set_target_properties(cupolar PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
@@ -52,8 +52,8 @@ foreach(x s d c z)
   target_link_libraries(example_cupolar_${x}Newton PUBLIC cupolar)
   set_property(TARGET example_cupolar_${x}Newton PROPERTY CUDA_ARCHITECTURES all)
 
-  # Hayley
-  add_executable(example_cupolar_${x}Hayley example_cupolar_${x}Hayley.cu)
-  target_link_libraries(example_cupolar_${x}Hayley PUBLIC cupolar)
-  set_property(TARGET example_cupolar_${x}Hayley PROPERTY CUDA_ARCHITECTURES all)
+  # Halley
+  add_executable(example_cupolar_${x}Halley example_cupolar_${x}Halley.cu)
+  target_link_libraries(example_cupolar_${x}Halley PUBLIC cupolar)
+  set_property(TARGET example_cupolar_${x}Halley PROPERTY CUDA_ARCHITECTURES all)
 endforeach()

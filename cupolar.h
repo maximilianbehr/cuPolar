@@ -39,15 +39,15 @@ int cupolar_dNewton(const int n, const double *A, void *d_buffer, void *h_buffer
 int cupolar_cNewton(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H);
 int cupolar_zNewton(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H);
 
-int cupolar_sHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
-int cupolar_dHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
-int cupolar_cHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
-int cupolar_zHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_sHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_dHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_cHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_zHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
 
-int cupolar_sHayley(const int n, const float *A, void *d_buffer, void *h_buffer, float *Q, float *H);
-int cupolar_dHayley(const int n, const double *A, void *d_buffer, void *h_buffer, double *Q, double *H);
-int cupolar_cHayley(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H);
-int cupolar_zHayley(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H);
+int cupolar_sHalley(const int n, const float *A, void *d_buffer, void *h_buffer, float *Q, float *H);
+int cupolar_dHalley(const int n, const double *A, void *d_buffer, void *h_buffer, double *Q, double *H);
+int cupolar_cHalley(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H);
+int cupolar_zHalley(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H);
 
 #ifdef __cplusplus
 }

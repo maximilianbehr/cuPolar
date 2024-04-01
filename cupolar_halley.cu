@@ -36,7 +36,7 @@
 const static cusolverAlgMode_t CUSOLVER_ALG = CUSOLVER_ALG_0;
 
 template <typename T>
-static int cupolar_HayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
+static int cupolar_HalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
     /*-----------------------------------------------------------------------------
      * initialize with zero
      *-----------------------------------------------------------------------------*/
@@ -70,20 +70,20 @@ static int cupolar_HayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h
     return 0;
 }
 
-int cupolar_sHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
-    return cupolar_HayleyBufferSize<float>(n, d_bufferSize, h_bufferSize);
+int cupolar_sHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
+    return cupolar_HalleyBufferSize<float>(n, d_bufferSize, h_bufferSize);
 }
 
-int cupolar_dHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
-    return cupolar_HayleyBufferSize<double>(n, d_bufferSize, h_bufferSize);
+int cupolar_dHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
+    return cupolar_HalleyBufferSize<double>(n, d_bufferSize, h_bufferSize);
 }
 
-int cupolar_cHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
-    return cupolar_HayleyBufferSize<cuComplex>(n, d_bufferSize, h_bufferSize);
+int cupolar_cHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
+    return cupolar_HalleyBufferSize<cuComplex>(n, d_bufferSize, h_bufferSize);
 }
 
-int cupolar_zHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
-    return cupolar_HayleyBufferSize<cuDoubleComplex>(n, d_bufferSize, h_bufferSize);
+int cupolar_zHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize) {
+    return cupolar_HalleyBufferSize<cuDoubleComplex>(n, d_bufferSize, h_bufferSize);
 }
 
 __device__ inline static cuComplex operator*(float a, const cuComplex &b) {
@@ -103,7 +103,7 @@ __device__ inline static cuDoubleComplex operator+(double a, const cuDoubleCompl
 }
 
 template <typename S, typename T>
-__global__ void prepare_Hayley(const int n, const S a, const S b, const S c, T *QHQ, T *aIbQHQ) {
+__global__ void prepare_Halley(const int n, const S a, const S b, const S c, T *QHQ, T *aIbQHQ) {
     int i0 = blockIdx.x * blockDim.x + threadIdx.x;
     int j0 = blockIdx.y * blockDim.y + threadIdx.y;
     for (int j = j0; j < n; j += gridDim.y * blockDim.y) {
@@ -132,7 +132,7 @@ __global__ void identity(const int n, T *A, const int lda) {
 }
 
 template <typename T>
-static int cupolar_Hayley(const int n, const T *A, void *d_buffer, void *h_buffer, T *Q, T *H) {
+static int cupolar_Halley(const int n, const T *A, void *d_buffer, void *h_buffer, T *Q, T *H) {
     /*-----------------------------------------------------------------------------
      * derived types
      *-----------------------------------------------------------------------------*/
@@ -236,7 +236,7 @@ static int cupolar_Hayley(const int n, const T *A, void *d_buffer, void *h_buffe
     }
 
     /*-----------------------------------------------------------------------------
-     * hayley iteration
+     * Halley iteration
      *-----------------------------------------------------------------------------*/
     iter = 1;
     static_assert(maxiter >= 1, "maxiter >= 1");
@@ -263,7 +263,7 @@ static int cupolar_Hayley(const int n, const T *A, void *d_buffer, void *h_buffe
         {
             dim3 grid((n + 15) / 16, (n + 15) / 16);
             dim3 block(16, 16);
-            prepare_Hayley<<<grid, block>>>(n, a, b, c, Qtmp, Qtmp2);
+            prepare_Halley<<<grid, block>>>(n, a, b, c, Qtmp, Qtmp2);
             CHECK_CUDA(cudaPeekAtLastError());
         }
 
@@ -343,18 +343,18 @@ static int cupolar_Hayley(const int n, const T *A, void *d_buffer, void *h_buffe
     return ret;
 }
 
-int cupolar_sHayley(const int n, const float *A, void *d_buffer, void *h_buffer, float *Q, float *H) {
-    return cupolar_Hayley(n, A, d_buffer, h_buffer, Q, H);
+int cupolar_sHalley(const int n, const float *A, void *d_buffer, void *h_buffer, float *Q, float *H) {
+    return cupolar_Halley(n, A, d_buffer, h_buffer, Q, H);
 }
 
-int cupolar_dHayley(const int n, const double *A, void *d_buffer, void *h_buffer, double *Q, double *H) {
-    return cupolar_Hayley(n, A, d_buffer, h_buffer, Q, H);
+int cupolar_dHalley(const int n, const double *A, void *d_buffer, void *h_buffer, double *Q, double *H) {
+    return cupolar_Halley(n, A, d_buffer, h_buffer, Q, H);
 }
 
-int cupolar_cHayley(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H) {
-    return cupolar_Hayley(n, A, d_buffer, h_buffer, Q, H);
+int cupolar_cHalley(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H) {
+    return cupolar_Halley(n, A, d_buffer, h_buffer, Q, H);
 }
 
-int cupolar_zHayley(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H) {
-    return cupolar_Hayley(n, A, d_buffer, h_buffer, Q, H);
+int cupolar_zHalley(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H) {
+    return cupolar_Halley(n, A, d_buffer, h_buffer, Q, H);
 }

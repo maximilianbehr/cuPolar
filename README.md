@@ -8,7 +8,7 @@
 
 **License:** The software is licensed under under MIT. See [`LICENSE`](LICENSE) for details.
 
-`cuPolar` is a `CUDA` library implementing Newton and Hayley's method for the Polar Decomposition of a nonsingular square matrix $A=QH$, where $Q$ is unitary and $H$ is hermitian positive semidefinite.
+`cuPolar` is a `CUDA` library implementing Newton and Halley's method for the Polar Decomposition of a nonsingular square matrix $A=QH$, where $Q$ is unitary and $H$ is hermitian positive semidefinite.
 
 `cuPolar` supports real and complex, single and double precision matrices.
 
@@ -20,8 +20,8 @@
 int cupolar_sNewtonBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
 int cupolar_sNewton(const int n, const float *A, void *d_buffer, void *h_buffer, float *Q, float *H);
 
-int cupolar_sHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
-int cupolar_sHayley(const int n, const float *A, void *d_buffer, void *h_buffer, float *Q, float *H);
+int cupolar_sHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_sHalley(const int n, const float *A, void *d_buffer, void *h_buffer, float *Q, float *H);
 ```
 
 ### Double Precision Functions
@@ -29,8 +29,8 @@ int cupolar_sHayley(const int n, const float *A, void *d_buffer, void *h_buffer,
 int cupolar_dNewtonBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
 int cupolar_dNewton(const int n, const double *A, void *d_buffer, void *h_buffer, double *Q, double *H);
 
-int cupolar_dHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
-int cupolar_dHayley(const int n, const double *A, void *d_buffer, void *h_buffer, double *Q, double *H);
+int cupolar_dHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_dHalley(const int n, const double *A, void *d_buffer, void *h_buffer, double *Q, double *H);
 ```
 
 ### Complex Single Precision Functions
@@ -38,8 +38,8 @@ int cupolar_dHayley(const int n, const double *A, void *d_buffer, void *h_buffer
 int cupolar_cNewtonBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
 int cupolar_cNewton(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H);
 
-int cupolar_cHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
-int cupolar_cHayley(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H);
+int cupolar_cHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_cHalley(const int n, const cuComplex *A, void *d_buffer, void *h_buffer, cuComplex *Q, cuComplex *H);
 ```
 
 ### Complex Double Precision Functions
@@ -47,14 +47,14 @@ int cupolar_cHayley(const int n, const cuComplex *A, void *d_buffer, void *h_buf
 int cupolar_zNewtonBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
 int cupolar_zNewton(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H);
 
-int cupolar_zHayleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
-int cupolar_zHayley(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H);
+int cupolar_zHalleyBufferSize(const int n, size_t *d_bufferSize, size_t *h_bufferSize);
+int cupolar_zHalley(const int n, const cuDoubleComplex *A, void *d_buffer, void *h_buffer, cuDoubleComplex *Q, cuDoubleComplex *H);
 ```
 
 
 ## Algorithm
 
-`cuPolar` implements the Newton's method with scaling as well as Hayley's method with scaling for the approximation of the polar decomposition.
+`cuPolar` implements the Newton's method with scaling as well as Halley's method with scaling for the approximation of the polar decomposition.
 The matrix $A$ must be square and nonsingular.
 
 See also Algorithm 3.1
@@ -89,7 +89,7 @@ We provide examples for all supported matrix formats:
 | [`example_cupolar_dNewton.cu`](example_cupolar_dNewton.cu) | real, double precision matrix       |
 | [`example_cupolar_cNewton.cu`](example_cupolar_cNewton.cu) | complex, single precision matrix    |
 | [`example_cupolar_zNewton.cu`](example_cupolar_zNewton.cu) | complex, double precision matrix    |
-| [`example_cupolar_sHayley.cu`](example_cupolar_sHayley.cu) | real, single precision matrix       |
-| [`example_cupolar_dHayley.cu`](example_cupolar_dHayley.cu) | real, double precision matrix       |
-| [`example_cupolar_cHayley.cu`](example_cupolar_cHayley.cu) | complex, single precision matrix    |
-| [`example_cupolar_zHayley.cu`](example_cupolar_zHayley.cu) | complex, double precision matrix    |
+| [`example_cupolar_sHalley.cu`](example_cupolar_sHalley.cu) | real, single precision matrix       |
+| [`example_cupolar_dHalley.cu`](example_cupolar_dHalley.cu) | real, double precision matrix       |
+| [`example_cupolar_cHalley.cu`](example_cupolar_cHalley.cu) | complex, single precision matrix    |
+| [`example_cupolar_zHalley.cu`](example_cupolar_zHalley.cu) | complex, double precision matrix    |

@@ -30,11 +30,11 @@ int main(void) {
     /*-----------------------------------------------------------------------------
      * variables
      *-----------------------------------------------------------------------------*/
-    int ret = 0;                 // return value
-    const int n = 100;           // size of the input matrix A n-by-n
-    cuDoubleComplex *A, *Q, *H;  // input matrix and factor matrices
-    void *d_buffer = NULL;       // device buffer
-    void *h_buffer = NULL;       // host buffer
+    int ret = 0;            // return value
+    const int n = 100;      // size of the input matrix A n-by-n
+    cuComplex *A, *Q, *H;   // input matrix and factor matrices
+    void *d_buffer = NULL;  // device buffer
+    void *h_buffer = NULL;  // host buffer
 
     /*-----------------------------------------------------------------------------
      * allocate A, Q and H
@@ -49,7 +49,7 @@ int main(void) {
     srand(0);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            A[i + j * n] = cuDoubleComplex{(double)rand() / RAND_MAX, (double)rand() / RAND_MAX};
+            A[i + j * n] = cuComplex{(float)rand() / RAND_MAX, (float)rand() / RAND_MAX};
         }
     }
 
@@ -57,7 +57,7 @@ int main(void) {
      * perform a workspace query and allocate memory buffer on the host and device
      *-----------------------------------------------------------------------------*/
     size_t d_bufferSize = 0, h_bufferSize = 0;
-    cupolar_zHayleyBufferSize(n, &d_bufferSize, &h_bufferSize);
+    cupolar_cHalleyBufferSize(n, &d_bufferSize, &h_bufferSize);
 
     if (d_bufferSize > 0) {
         cudaMalloc((void **)&d_buffer, d_bufferSize);
@@ -70,26 +70,26 @@ int main(void) {
     /*-----------------------------------------------------------------------------
      * compute Q and H
      *-----------------------------------------------------------------------------*/
-    cupolar_zHayley(n, A, d_buffer, h_buffer, Q, H);
+    cupolar_cHalley(n, A, d_buffer, h_buffer, Q, H);
 
     /*-----------------------------------------------------------------------------
      * check polar decomposition A = Q*H
      *-----------------------------------------------------------------------------*/
-    double fronrmA = 0.0, fronrmdiff = 0.0;
+    float fronrmA = 0.0f, fronrmdiff = 0.0f;
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            cuDoubleComplex sum = cuDoubleComplex{0.0, 0.0};
+            cuComplex sum = cuComplex{0.0f, 0.0f};
             for (int k = 0; k < n; ++k) {
-                sum = cuCadd(sum, cuCmul(Q[i + k * n], H[k + j * n]));
+                sum = cuCaddf(sum, cuCmulf(Q[i + k * n], H[k + j * n]));
             }
-            double diff = cuCabs((cuCsub(A[i + j * n], sum)));
+            float diff = cuCabsf((cuCsubf(A[i + j * n], sum)));
             fronrmdiff += diff * diff;
-            fronrmA += cuCreal(cuCmul(cuConj(A[i + j * n]), A[i + j * n]));
+            fronrmA += cuCrealf(cuCmulf(cuConjf(A[i + j * n]), A[i + j * n]));
         }
     }
-    double error = sqrt(fronrmdiff / fronrmA);
+    float error = sqrtf(fronrmdiff / fronrmA);
     printf("rel. error ||A-Q*H||_F / ||A||_F = %e\n", error);
-    if (error < 1e-8) {
+    if (error < 1e-4) {
         printf("Polar Decomposition successful\n");
     } else {
         printf("Polar Decomposition failed\n");

@@ -57,7 +57,7 @@ int main(void) {
      * perform a workspace query and allocate memory buffer on the host and device
      *-----------------------------------------------------------------------------*/
     size_t d_bufferSize = 0, h_bufferSize = 0;
-    cupolar_sHayleyBufferSize(n, &d_bufferSize, &h_bufferSize);
+    cupolar_sHalleyBufferSize(n, &d_bufferSize, &h_bufferSize);
 
     if (d_bufferSize > 0) {
         cudaMalloc((void **)&d_buffer, d_bufferSize);
@@ -70,7 +70,7 @@ int main(void) {
     /*-----------------------------------------------------------------------------
      *  compute Q and H
      *-----------------------------------------------------------------------------*/
-    cupolar_sHayley(n, A, d_buffer, h_buffer, Q, H);
+    cupolar_sHalley(n, A, d_buffer, h_buffer, Q, H);
 
     /*-----------------------------------------------------------------------------
      * check polar decomposition A = Q*H
